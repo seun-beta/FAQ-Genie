@@ -1,0 +1,27 @@
+services:
+  app:
+    build: .
+    container_name: rag_supernova_app
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/
+      - DB_NAME=supernova_rag
+      - COLLECTION_NAME=employee_handbook
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LOG_LEVEL=INFO
+    depends_on:
+      - mongo
+    volumes:
+      - .:/app
+
+  mongo:
+    image: mongo:latest
+    container_name: rag_supernova_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
